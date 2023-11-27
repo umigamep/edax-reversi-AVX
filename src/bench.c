@@ -23,11 +23,10 @@
 static unsigned long long click(void)
 {
 #if defined(USE_GAS_X64)
+    struct timespec ts;
+    clock_gettime(CLOCK_MONOTONIC, &ts);
+    return (unsigned long long)(ts.tv_sec) * 1000000000LL + (unsigned long long)(ts.tv_nsec);
 
-	unsigned int a, d;
-	__asm__ volatile (
-		"rdtsc" : "=a" (a), "=d" (d));
-	return a | (((unsigned long long)d) << 32);
 
 #elif defined(USE_GAS_X86)
 	unsigned long long a;
